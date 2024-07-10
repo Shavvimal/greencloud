@@ -3,9 +3,9 @@ import { CarbonForm } from "@/components/form";
 
 export function Hero() {
   return (
-    <div className="w-full flex flex-col items-center justify-center antialiased md:max-w-2xl">
-      <div className="md:max-w-2xl mx-auto p-4">
-        <h1 className="relative z-10 text-4xl md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-emerald-200 to-emerald-600  text-center font-sans font-bold">
+    <div className="md:w-1/2 flex flex-col items-center justify-center antialiased ">
+      <div className=" mx-auto p-4">
+        <h1 className="relative z-10 text-4xl md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-emerald-500 to-emerald-600  text-center font-sans font-bold">
           GreenCloud
         </h1>
         <p></p>

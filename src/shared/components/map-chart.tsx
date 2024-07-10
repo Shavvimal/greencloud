@@ -8,6 +8,8 @@ import {
   Geography,
   Sphere,
   Graticule,
+  ZoomableGroup,
+  Marker,
 } from "react-simple-maps";
 import { useRef } from "react";
 import { Tooltip, TooltipRefProps } from "react-tooltip";
@@ -15,17 +17,17 @@ import { Tooltip, TooltipRefProps } from "react-tooltip";
 const geoUrl = "/features.json";
 
 const COLOR_RANGE = [
-  "#ecfdf5",
-  "#d1fae5",
-  "#a7f3d0",
-  "#6ee7b7",
-  "#34d399",
-  "#10b981",
-  "#059669",
-  "#047857",
-  "#065f46",
-  "#064e3b",
-  "#022c22",
+  "#f0fdf4",
+  "#dcfce7",
+  "#bbf7d0",
+  "#86efac",
+  "#4ade80",
+  "#22c55e",
+  "#16a34a",
+  "#15803d",
+  "#166534",
+  "#14532d",
+  "#052e16",
 ];
 
 const dataGlobal = [
@@ -212,6 +214,30 @@ const dataGlobal = [
   { ISO3: "ZWE", data: 0.543401148 },
 ];
 
+type Marker = {
+  markerOffset: number;
+  name: string;
+  coordinates: [number, number];
+};
+const markers = [
+  {
+    markerOffset: -15,
+    name: "Buenos Aires",
+    coordinates: [-58.3816, -34.6037],
+  },
+  { markerOffset: -15, name: "La Paz", coordinates: [-68.1193, -16.4897] },
+  { markerOffset: 25, name: "Brasilia", coordinates: [-47.8825, -15.7942] },
+  { markerOffset: 25, name: "Santiago", coordinates: [-70.6693, -33.4489] },
+  { markerOffset: 25, name: "Bogota", coordinates: [-74.0721, 4.711] },
+  { markerOffset: 25, name: "Quito", coordinates: [-78.4678, -0.1807] },
+  { markerOffset: -15, name: "Georgetown", coordinates: [-58.1551, 6.8013] },
+  { markerOffset: -15, name: "Asuncion", coordinates: [-57.5759, -25.2637] },
+  { markerOffset: 25, name: "Paramaribo", coordinates: [-55.2038, 5.852] },
+  { markerOffset: 25, name: "Montevideo", coordinates: [-56.1645, -34.9011] },
+  { markerOffset: -15, name: "Caracas", coordinates: [-66.9036, 10.4806] },
+  { markerOffset: -15, name: "Lima", coordinates: [-77.0428, -12.0464] },
+] as Marker[];
+
 const MapChart = () => {
   const [tooltipContent, setTooltipContent] = useState("");
   const tooltipRef = useRef<TooltipRefProps>(null);
@@ -301,7 +327,7 @@ const MapChart = () => {
   };
 
   return (
-    <>
+    <div className="w-1/2 h-full border-l border-2">
       <Tooltip id="my-tooltip" className="z-50" float={true} ref={tooltipRef}>
         {tooltipContent}
       </Tooltip>
@@ -312,46 +338,60 @@ const MapChart = () => {
         }}
         data-tooltip-id="map-tooltip"
         data-tooltip-float="true"
-        className="z-10"
+        className="z-10  h-full w-full"
       >
-        <Sphere id="sphere" fill="white" stroke="#E4E5E6" strokeWidth={0.5} />
-        <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
-        {data.length > 0 && (
-          <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                const d = data.find((s) => s.ISO3 === geo.id);
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    fill={d ? colorScale(d.data) : "#F5F4F6"}
-                    onMouseEnter={() => {
-                      console.log(
-                        `${d?.ISO3 ? d.ISO3 : ""} — ${d?.data ? d.data : 0}`
-                      );
-                      setTooltipContent(
-                        `${d?.ISO3 ? d.ISO3 : ""} — ${d?.data ? d.data : 0}`
-                      );
-                      tooltipRef.current?.open({
-                        position: position,
-                        place: "bottom",
-                        content: `${d?.ISO3 ? d.ISO3 : ""} — ${
-                          d?.data ? d.data : 0
-                        }`,
-                      });
-                    }}
-                    onMouseLeave={onMouseLeaveMap}
-                    style={geographyStyle}
-                    data-tip={d ? `${d.ISO3} - ${d.data}` : "No data"}
-                  />
-                );
-              })
-            }
-          </Geographies>
-        )}
+        <ZoomableGroup center={[0, 0]} zoom={1}>
+          <Sphere id="sphere" fill="white" stroke="#E4E5E6" strokeWidth={0.5} />
+          <Graticule stroke="#E4E5E6" strokeWidth={0.5} />
+          {data.length > 0 && (
+            <Geographies geography={geoUrl}>
+              {({ geographies }) =>
+                geographies.map((geo) => {
+                  const d = data.find((s) => s.ISO3 === geo.id);
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      fill={d ? colorScale(d.data) : "#F5F4F6"}
+                      onMouseEnter={() => {
+                        console.log(
+                          `${d?.ISO3 ? d.ISO3 : ""} — ${d?.data ? d.data : 0}`
+                        );
+                        setTooltipContent(
+                          `${d?.ISO3 ? d.ISO3 : ""} — ${d?.data ? d.data : 0}`
+                        );
+                        tooltipRef.current?.open({
+                          position: position,
+                          place: "bottom",
+                          content: `${d?.ISO3 ? d.ISO3 : ""} — ${
+                            d?.data ? d.data : 0
+                          }`,
+                        });
+                      }}
+                      onMouseLeave={onMouseLeaveMap}
+                      style={geographyStyle}
+                      data-tip={d ? `${d.ISO3} - ${d.data}` : "No data"}
+                    />
+                  );
+                })
+              }
+            </Geographies>
+          )}
+          {/* {markers.map(({ name, coordinates, markerOffset }) => (
+            <Marker key={name} coordinates={coordinates}>
+              <circle r={5} fill="#F00" stroke="#fff" strokeWidth={2} />
+              <text
+                textAnchor="middle"
+                y={markerOffset}
+                style={{ fontFamily: "system-ui", fill: "#5D5A6D" }}
+              >
+                {name}
+              </text>
+            </Marker>
+          ))} */}
+        </ZoomableGroup>
       </ComposableMap>
-    </>
+    </div>
   );
 };
 
