@@ -183,7 +183,7 @@ export function CarbonForm() {
           <Button type="submit">Submit</Button>
         </form>
       </Form>
-      <div className="mt-5 w-full">
+      <div className="mt-5 w-full p-4 md:p-0">
         <h2 className="mb-5">{regions.length > 1 ? "Chosen Regions:" : ""}</h2>
         {
           // Display the regions

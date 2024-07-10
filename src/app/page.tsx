@@ -3,7 +3,7 @@ import { Hero } from "@/components/hero";
 
 export default function Home() {
   return (
-    <main className="flex h-screen flex-row items-center justify-between p-24">
+    <main className="flex h-screen flex-col md:flex-row items-center justify-between md:p-24">
       <Hero />
       <MapChart />
     </main>
