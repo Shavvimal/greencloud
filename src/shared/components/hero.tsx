@@ -14,10 +14,10 @@ export function Hero() {
           emissions from cloud computing effortlessly. Our cloud-agnostic
           platform routes compute workloads, including AI tasks, to data centers
           with the lowest carbon intensity, using real-time data and emergy
-          accounting, while maintaining existing SLA's. Maintain top performance
-          and compliance without extra effort, and make a tangible impact on
-          global greenhouse gas emissions. Join us in driving sustainable
-          computing and building a greener future.
+          accounting, while maintaining existing SLA&apos;s. Maintain top
+          performance and compliance without extra effort, and make a tangible
+          impact on global greenhouse gas emissions. Join us in driving
+          sustainable computing and building a greener future.
         </p>
       </div>
       <CarbonForm />
